@@ -38,8 +38,10 @@ def gitlab_version(gl) -> GitlabVersion:
 
 
 @pytest.fixture(scope="session")
-def fixture_dir(pt_gitlab_dir: Path) -> Path:
-    return pt_gitlab_dir / "docker"
+def docker_assets_dir() -> Path:
+    import gitlab.testing
+
+    return Path(gitlab.testing.__file__).parent / "docker"
 
 
 @pytest.fixture(scope="session")
@@ -127,7 +129,7 @@ def reset_gitlab(gl: gitlab.Gitlab) -> None:  # noqa C901
     time.sleep(2)
 
 
-def set_token(container: str, fixture_dir: Path, gitlab_url: str) -> str:
+def set_token(container: str, docker_assets_dir: Path, gitlab_url: str) -> str:
     logging.info("Trying to load saved token")
     gitlab_token_path = Path(".gitlab_token")
     if gitlab_token_path.exists():
@@ -141,7 +143,7 @@ def set_token(container: str, fixture_dir: Path, gitlab_url: str) -> str:
             return saved_token
 
     logging.info("Creating API token.")
-    set_token_rb = fixture_dir / "set_token.rb"
+    set_token_rb = docker_assets_dir / "set_token.rb"
 
     with Path(set_token_rb).open(encoding="utf-8") as f:
         set_token_command = f.read().strip()
@@ -229,7 +231,7 @@ def gitlab_token(
     gitlab_container_name: str,
     gitlab_url: str,
     docker_services,
-    fixture_dir: Path,
+    docker_assets_dir: Path,
 ) -> str:
     start_time = time.perf_counter()
     logging.info("Waiting for GitLab container to become ready.")
@@ -249,7 +251,9 @@ def gitlab_token(
     )
 
     return set_token(
-        gitlab_container_name, fixture_dir=fixture_dir, gitlab_url=gitlab_url
+        gitlab_container_name,
+        docker_assets_dir=docker_assets_dir,
+        gitlab_url=gitlab_url,
     )
 
 

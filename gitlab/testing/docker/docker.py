@@ -17,8 +17,8 @@ pytest_docker.docker_compose_project_name = docker_compose_project_name
 
 
 @pytest.fixture(scope="session")
-def docker_compose_file(fixture_dir):
-    return fixture_dir / "docker-compose.yml"
+def docker_compose_file(docker_assets_dir):
+    return docker_assets_dir / "docker-compose.yml"
 
 
 pytest_docker.docker_compose_file = docker_compose_file

@@ -1,15 +1,6 @@
-from pathlib import Path
-
 import pytest
 
 import gitlab
-
-
-@pytest.fixture(scope="session")
-def pt_gitlab_dir() -> Path:
-    import gitlab.testing
-
-    return Path(gitlab.testing.__file__).parent
 
 
 @pytest.fixture(autouse=True)
