@@ -62,8 +62,8 @@ def gitlab_docker_port(docker_services, gitlab_service_name: str) -> int:
 
 
 @pytest.fixture(scope="session")
-def gitlab_url() -> str:
-    return "http://10.5.0.100/"
+def gitlab_url(docker_ip: str, gitlab_docker_port: int) -> str:
+    return f"http://{docker_ip}:{gitlab_docker_port}"
 
 
 def reset_gitlab(gl: gitlab.Gitlab) -> None:  # noqa C901
