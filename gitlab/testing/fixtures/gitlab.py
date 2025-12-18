@@ -341,7 +341,7 @@ def group(gl):
     helpers.safe_delete(group)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="module")
 def project(gl):
     """Project fixture for project API resource tests."""
     _id = uuid.uuid4().hex
