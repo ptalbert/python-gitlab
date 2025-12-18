@@ -1,7 +1,14 @@
+import pathlib
+
 import pytest
 
 import gitlab
 from gitlab.testing.fixtures.helpers import get_gitlab_plan
+
+
+@pytest.fixture(scope="session")
+def fixture_dir(test_dir: pathlib.Path) -> pathlib.Path:
+    return test_dir / "functional" / "fixtures"
 
 
 @pytest.fixture(scope="session")
